@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Synthetic Friend</title>
     <link rel="stylesheet" href="static/style.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
+            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="viewport flex-container">
@@ -13,12 +15,14 @@
             <source src="static/obama.mp4" type="video/mp4">
         </video>
         <div id="bottomDiv">
-            <button id="recordButton" onclick="triggerRecord()"></button>
+            <button id="recordButton" disabled onclick="triggerRecord()"></button>
         </div>
     </div>
     <div id="rightPanel">
         <p class="human-chat">Hello, my friend?</p>
         <p class="bot-chat">Hello, World!</p>
+        <input type="file" accept="audio/*" capture="microphone" id="recorder">
+        <audio id="player" controls></audio>
     </div>
 </div>
 </body>
@@ -40,5 +44,40 @@
     }
 
     updateRecord();
+
+    let recorder = document.getElementById('recorder');
+    let player = document.getElementById('player');
+
+    recorder.addEventListener('change', function (e) {
+        let file = e.target.files[0];
+        // Do something with the audio file.
+        player.src = URL.createObjectURL(file);
+    });
+
+    let handleSuccess = function (stream) {
+        if (window.URL) {
+            player.src = window.URL.createObjectURL(stream);
+        } else {
+            player.src = stream;
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(handleSuccess);
+
+    navigator.permissions.query({name: 'microphone'}).then(function (result) {
+        function enableRecordButton() {
+            if (result.state == 'granted') {
+                recordButton.disabled = false;
+            } else if (result.state == 'denied') {
+                recordButton.disabled = true;
+            }
+        }
+
+        result.onchange = function () {
+            enableRecordButton();
+        };
+
+        enableRecordButton();
+    });
 </script>
 </html>

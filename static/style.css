@@ -106,12 +106,16 @@ html, body, .viewport {
     font-size: 30px;
 }
 
-#recordButton:active {
+#recordButton:disabled {
+    opacity: 0.4;
+}
+
+#recordButton:active:enabled {
     transform: scale(0.90);
     box-shadow: 0 2px 15px 0 rgba(0,0,0,0.3);
 }
 
-#recordButton:hover {
+#recordButton:hover:enabled {
     cursor: pointer;
     background-color: #ff5c96;
     box-shadow: 0 8px 15px 0 rgba(0,0,0,0.3);
