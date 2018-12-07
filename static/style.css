@@ -87,7 +87,7 @@ html, body, .viewport {
     margin-right: -20px;
 }
 
-button.circle {
+#recordButton {
     border: none;
     outline: none;
     display: block;
@@ -106,12 +106,12 @@ button.circle {
     font-size: 30px;
 }
 
-button.circle:active {
+#recordButton:active {
     transform: scale(0.90);
     box-shadow: 0 2px 15px 0 rgba(0,0,0,0.3);
 }
 
-button.circle:hover {
+#recordButton:hover {
     cursor: pointer;
     background-color: #ff5c96;
     box-shadow: 0 8px 15px 0 rgba(0,0,0,0.3);
