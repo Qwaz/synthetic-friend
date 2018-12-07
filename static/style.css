@@ -1,67 +1,118 @@
-#myVideo {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 75%;
-  min-height: 100%;
-  object-fit: contain;
+html, body, .viewport {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
 }
 
-#chat {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  width: 25%;
-  background-color: #dfe6e9;
-  padding: 15px;
+.flex-container {
+    display: flex;
 }
 
-#chat > p {
-  padding: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  color: #2d3436;
+#leftPanel {
+    flex-grow: 1;
+    max-height: 100%;
+    background-color: aqua;
+}
+
+#rightPanel {
+    z-index: 1;
+    flex-grow: 0;
+    flex-basis: 500px;
+    background-color: #dfe6e9;
+    padding: 15px;
+    max-height: 100%;
+}
+
+#rightPanel > p {
+    z-index: 10;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    color: #2d3436;
+}
+
+#backgroundVideo {
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+#bottomDiv {
+    margin-top: -140px;
 }
 
 .bot-chat {
-	position: relative;
-	background: #b2bec3;
-	border-radius: .4em;
+    position: relative;
+    background: #b2bec3;
+    border-radius: .4em;
 }
 
 .bot-chat:after {
-	content: '';
-	position: absolute;
-	left: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
 	border: 20px solid transparent;
 	border-right-color: #b2bec3;
 	border-left: 0;
 	border-top: 0;
-	margin-top: -10px;
-	margin-left: -20px;
+    margin-top: -10px;
+    margin-left: -20px;
 }
 
 .human-chat {
-	position: relative;
-	background: #74b9ff;
-	border-radius: .4em;
+    position: relative;
+    background: #74b9ff;
+    border-radius: .4em;
 }
 
 .human-chat:after {
-	content: '';
-	position: absolute;
-	right: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 20px solid transparent;
-	border-left-color: #74b9ff;
-	border-right: 0;
-	border-top: 0;
-	margin-top: -10px;
-	margin-right: -20px;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-left-color: #74b9ff;
+    border-right: 0;
+    border-top: 0;
+    margin-top: -10px;
+    margin-right: -20px;
+}
+
+button.circle {
+    border: none;
+    outline: none;
+    display: block;
+    position: relative;
+    padding: 0;
+    z-index: 20;
+    margin: 0 auto;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    background-color: #F50057;
+    transition: 0.2s;
+    text-align: center;
+    color: white;
+    font-size: 30px;
+}
+
+button.circle:active {
+    transform: scale(0.90);
+    box-shadow: 0 2px 15px 0 rgba(0,0,0,0.3);
+}
+
+button.circle:hover {
+    cursor: pointer;
+    background-color: #ff5c96;
+    box-shadow: 0 8px 15px 0 rgba(0,0,0,0.3);
 }

@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <title>Synthetic Friend</title>
     <link rel="stylesheet" href="static/style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
 </head>
 <body>
-<video autoplay muted loop id="myVideo">
-    <source src="static/videoplayback.mp4" type="video/mp4">
-</video>
-<div id="chat">
-    <p class="human-chat">Hello, my friend?</p>
-    <p class="bot-chat">Hello, World!</p>
+<div class="viewport flex-container">
+    <div id="leftPanel">
+        <video autoplay muted loop id="backgroundVideo">
+            <source src="static/videoplayback.mp4" type="video/mp4">
+        </video>
+        <div id="bottomDiv">
+            <button class="circle"><i class="fas fa-microphone"></i></button>
+        </div>
+    </div>
+    <div id="rightPanel">
+        <p class="human-chat">Hello, my friend?</p>
+        <p class="bot-chat">Hello, World!</p>
+    </div>
 </div>
 </body>
 </html>
