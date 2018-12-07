@@ -1,0 +1,67 @@
+#myVideo {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 75%;
+  min-height: 100%;
+  object-fit: contain;
+}
+
+#chat {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 25%;
+  background-color: #dfe6e9;
+  padding: 15px;
+}
+
+#chat > p {
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: #2d3436;
+}
+
+.bot-chat {
+	position: relative;
+	background: #b2bec3;
+	border-radius: .4em;
+}
+
+.bot-chat:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-right-color: #b2bec3;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -10px;
+	margin-left: -20px;
+}
+
+.human-chat {
+	position: relative;
+	background: #74b9ff;
+	border-radius: .4em;
+}
+
+.human-chat:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-left-color: #74b9ff;
+	border-right: 0;
+	border-top: 0;
+	margin-top: -10px;
+	margin-right: -20px;
+}
