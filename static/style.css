@@ -25,11 +25,12 @@ html, body, .viewport {
 }
 
 #rightPanel > p {
-    z-index: 10;
     padding: 20px;
     margin-left: 20px;
     margin-right: 20px;
     color: #2d3436;
+    display: inline-block;
+    clear: both;
 }
 
 #backgroundVideo {
@@ -41,13 +42,18 @@ html, body, .viewport {
 }
 
 #bottomDiv {
-    margin-top: -140px;
+    position: relative;
+    margin-top: -220px;
+    padding-top: 90px;
+    padding-bottom: 50px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
 }
 
 .bot-chat {
     position: relative;
     background: #b2bec3;
     border-radius: .4em;
+    float: left;
 }
 
 .bot-chat:after {
@@ -69,6 +75,7 @@ html, body, .viewport {
     position: relative;
     background: #74b9ff;
     border-radius: .4em;
+    float: right;
 }
 
 .human-chat:after {
@@ -92,7 +99,6 @@ html, body, .viewport {
     display: block;
     position: relative;
     padding: 0;
-    z-index: 20;
     margin: 0 auto;
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3);
     border-radius: 50%;

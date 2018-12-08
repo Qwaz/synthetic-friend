@@ -23,8 +23,9 @@
     </div>
     <div id="rightPanel">
         <audio id="player" controls></audio>
-        <p class="human-chat">Hello, my friend?</p>
-        <p class="bot-chat">Hello, World!</p>
+        <p class="bot-chat">마이크 버튼을 눌러 말을 걸어 주세요</p>
+        <p class="human-chat"><i class="fas fa-spinner fa-pulse"></i></p>
+        <p class="human-chat">안녕</p>
     </div>
 </div>
 </body>
@@ -69,10 +70,10 @@
                                 let player = document.getElementById('player');
                                 player.src = URL.createObjectURL(e.data);
 
-                                speechToText(e.data, (text) => {
+                                speechToText(e.data, (res) => {
                                     let newBubble = document.createElement("p");
                                     newBubble.className = "human-chat";
-                                    newBubble.innerText = text;
+                                    newBubble.innerText = typeof res === "string" ? res : "(failed to recognize)";
                                     document.getElementById("rightPanel").appendChild(newBubble);
                                 });
                             }
