@@ -1,5 +1,7 @@
+import json
 import os
 
+import requests
 from flask import Flask, render_template, send_from_directory, request, abort, jsonify
 
 app = Flask(__name__)
@@ -34,8 +36,13 @@ def response_generation():
     import random
     if 'text' not in request.form:
         abort(400)
+    response = requests.get('https://pingpong.us/api/reaction.php', params={
+        'custom': 'basic',
+        'query': request.form['text'],
+    })
+    response_candidates = json.loads(response.text)
     return jsonify({
-        'text': request.form['text'],
+        'text': random.choice(response_candidates)['message'],
         'video': '/generated/obama{}.mp4'.format(random.randint(1, 3)),
     })
 
