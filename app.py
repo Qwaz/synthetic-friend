@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, send_from_directory, request, abort
+from flask import Flask, render_template, send_from_directory, request, abort, jsonify
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '.\\uploads'
@@ -29,9 +29,25 @@ def speech_recognition():
     return recognize(ogg_filename)
 
 
+@app.route('/api/response_generation', methods=['POST'])
+def response_generation():
+    import random
+    if 'text' not in request.form:
+        abort(400)
+    return jsonify({
+        'text': request.form['text'],
+        'video': '/generated/obama{}.mp4'.format(random.randint(1, 3)),
+    })
+
+
 @app.route('/static/<path:path>')
 def send_static(path):
     return send_from_directory('static', path)
+
+
+@app.route('/generated/<path:path>')
+def send_generated(path):
+    return send_from_directory('generated', path)
 
 
 if __name__ == '__main__':

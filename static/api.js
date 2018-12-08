@@ -5,8 +5,20 @@ function speechToText(data, callback) {
     reqwest({
         url: '/api/speech_recognition',
         method: 'post',
-        processData: false,
-        data: formData
+        data: formData,
+        processData: false
+    }).then(response => {
+        callback(response);
+    });
+}
+
+function generateResponse(data, callback) {
+    reqwest({
+        url: '/api/response_generation',
+        method: 'post',
+        data: {
+            text: data
+        }
     }).then(response => {
         callback(response);
     });

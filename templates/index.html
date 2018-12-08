@@ -27,6 +27,8 @@
 </div>
 </body>
 <script>
+    const SPINNER = '<i class="fas fa-spinner fa-pulse"></i>';
+
     let recording = false;
     let recordButton = document.getElementById("recordButton");
 
@@ -44,7 +46,7 @@
 
     function updateRecord() {
         if (recording) {
-            recordButton.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+            recordButton.innerHTML = SPINNER;
         } else {
             recordButton.innerHTML = '<i class="fas fa-microphone"></i>';
         }
@@ -67,6 +69,16 @@
                                 speechToText(e.data, (res) => {
                                     if (typeof res === "string") {
                                         changeLastBubbleHTML(res);
+                                        addBubble('bot-chat', SPINNER);
+                                        generateResponse(res, (data) => {
+                                            changeLastBubbleHTML(data.text);
+                                            
+                                            let video = document.getElementById("backgroundVideo");
+                                            video.pause();
+                                            video.children[0].setAttribute('src', data.video);
+                                            video.load();
+                                            video.play();
+                                        });
                                     } else {
                                         deleteLastBubble();
                                     }
@@ -80,7 +92,7 @@
         } else {
             if (mediaRecorder != null) {
                 mediaRecorder.stop();
-                addBubble("human-chat", '<i class="fas fa-spinner fa-pulse"></i>');
+                addBubble("human-chat", SPINNER);
                 mediaRecorder = null;
             }
         }
