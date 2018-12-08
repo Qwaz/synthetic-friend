@@ -19,7 +19,7 @@ html, body, .viewport {
     z-index: 1;
     flex-grow: 0;
     flex-basis: 500px;
-    background-color: #dfe6e9;
+    background-color: #eef3f5;
     padding: 15px;
     max-height: 100%;
 }
@@ -51,7 +51,7 @@ html, body, .viewport {
 
 .bot-chat {
     position: relative;
-    background: #b2bec3;
+    background: #c1d0d6;
     border-radius: .4em;
     float: left;
 }
@@ -64,7 +64,7 @@ html, body, .viewport {
     width: 0;
     height: 0;
 	border: 20px solid transparent;
-	border-right-color: #b2bec3;
+	border-right-color: #c1d0d6;
 	border-left: 0;
 	border-top: 0;
     margin-top: -10px;
@@ -73,7 +73,7 @@ html, body, .viewport {
 
 .human-chat {
     position: relative;
-    background: #74b9ff;
+    background: #abd5ff;
     border-radius: .4em;
     float: right;
 }
@@ -86,7 +86,7 @@ html, body, .viewport {
     width: 0;
     height: 0;
     border: 20px solid transparent;
-    border-left-color: #74b9ff;
+    border-left-color: #abd5ff;
     border-right: 0;
     border-top: 0;
     margin-top: -10px;

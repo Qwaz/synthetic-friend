@@ -22,7 +22,6 @@
         </div>
     </div>
     <div id="rightPanel">
-        <audio id="player" controls></audio>
         <p class="bot-chat">마이크 버튼을 눌러 말을 걸어 주세요</p>
     </div>
 </div>
@@ -65,9 +64,6 @@
 
                         mediaRecorder.addEventListener('dataavailable', function (e) {
                             if (e.data.size > 0) {
-                                let player = document.getElementById('player');
-                                player.src = URL.createObjectURL(e.data);
-
                                 speechToText(e.data, (res) => {
                                     if (typeof res === "string") {
                                         changeLastBubbleHTML(res);
