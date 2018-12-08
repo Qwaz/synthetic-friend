@@ -28,7 +28,9 @@ function addBubble(clazz, html) {
     let newBubble = document.createElement("p");
     newBubble.className = clazz;
     newBubble.innerHTML = html;
-    document.getElementById("rightPanel").appendChild(newBubble);
+    let panel = document.getElementById("rightPanel");
+    panel.appendChild(newBubble);
+    panel.scrollTop = panel.scrollHeight;
 }
 
 function changeLastBubbleHTML(html) {
