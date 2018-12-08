@@ -11,3 +11,19 @@ function speechToText(data, callback) {
         callback(response);
     });
 }
+
+function addBubble(clazz, html) {
+    let newBubble = document.createElement("p");
+    newBubble.className = clazz;
+    newBubble.innerHTML = html;
+    document.getElementById("rightPanel").appendChild(newBubble);
+}
+
+function changeLastBubbleHTML(html) {
+    document.getElementById("rightPanel").lastChild.innerText = html;
+}
+
+function deleteLastBubble() {
+    let panel = document.getElementById("rightPanel");
+    panel.removeChild(panel.lastChild);
+}
