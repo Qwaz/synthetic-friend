@@ -7,6 +7,9 @@
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
             integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
             crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reqwest/2.0.5/reqwest.min.js"
+            integrity="sha256-AABtmZB6S65gxpY8B5Q1xVtnVp2HBrITDdwsninrCS4=" crossorigin="anonymous"></script>
+    <script src="/static/api.js"></script>
 </head>
 <body>
 <div class="viewport flex-container">
@@ -19,9 +22,9 @@
         </div>
     </div>
     <div id="rightPanel">
+        <audio id="player" controls></audio>
         <p class="human-chat">Hello, my friend?</p>
         <p class="bot-chat">Hello, World!</p>
-        <audio id="player" controls></audio>
     </div>
 </div>
 </body>
@@ -65,6 +68,13 @@
                             if (e.data.size > 0) {
                                 let player = document.getElementById('player');
                                 player.src = URL.createObjectURL(e.data);
+
+                                speechToText(e.data, (res) => {
+                                    let newBubble = document.createElement("p");
+                                    newBubble.className = "human-chat";
+                                    newBubble.innerText = res;
+                                    document.getElementById("rightPanel").appendChild(newBubble);
+                                });
                             }
                         });
 
