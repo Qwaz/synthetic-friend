@@ -1,4 +1,5 @@
 .idea
+uploads
 credential.json
 
 ### Flask ###
