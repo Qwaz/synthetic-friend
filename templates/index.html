@@ -21,7 +21,6 @@
     <div id="rightPanel">
         <p class="human-chat">Hello, my friend?</p>
         <p class="bot-chat">Hello, World!</p>
-        <input type="file" accept="audio/*" capture="microphone" id="recorder">
         <audio id="player" controls></audio>
     </div>
 </div>
@@ -29,6 +28,18 @@
 <script>
     let recording = false;
     let recordButton = document.getElementById("recordButton");
+
+    navigator.permissions.query({name: 'microphone'}).then(function (result) {
+        function enableRecordButton() {
+            recordButton.disabled = (result.state != 'granted');
+        }
+
+        result.onchange = function () {
+            enableRecordButton();
+        };
+
+        enableRecordButton();
+    });
 
     function updateRecord() {
         if (recording) {
@@ -38,46 +49,37 @@
         }
     }
 
+    let mediaRecorder = null;
+
     function triggerRecord() {
         recording = !recording;
         updateRecord();
+
+        if (recording) {
+            navigator.mediaDevices.getUserMedia({audio: true, video: false})
+                .then((stream) => {
+                        const options = {mimeType: 'video/webm;codecs=vp9'};
+                        mediaRecorder = new MediaRecorder(stream, options);
+
+                        mediaRecorder.addEventListener('dataavailable', function (e) {
+                            if (e.data.size > 0) {
+                                let player = document.getElementById('player');
+                                player.src = URL.createObjectURL(e.data);
+                            }
+                        });
+
+                        mediaRecorder.start();
+                    }
+                )
+        } else {
+            if (mediaRecorder != null) {
+                mediaRecorder.stop();
+                mediaRecorder = null;
+            }
+        }
     }
 
     updateRecord();
-
-    let recorder = document.getElementById('recorder');
-    let player = document.getElementById('player');
-
-    recorder.addEventListener('change', function (e) {
-        let file = e.target.files[0];
-        // Do something with the audio file.
-        player.src = URL.createObjectURL(file);
-    });
-
-    let handleSuccess = function (stream) {
-        if (window.URL) {
-            player.src = window.URL.createObjectURL(stream);
-        } else {
-            player.src = stream;
-        }
-    };
-
-    navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(handleSuccess);
-
-    navigator.permissions.query({name: 'microphone'}).then(function (result) {
-        function enableRecordButton() {
-            if (result.state == 'granted') {
-                recordButton.disabled = false;
-            } else if (result.state == 'denied') {
-                recordButton.disabled = true;
-            }
-        }
-
-        result.onchange = function () {
-            enableRecordButton();
-        };
-
-        enableRecordButton();
-    });
+    navigator.mediaDevices.getUserMedia({audio: true, video: false});
 </script>
 </html>
