@@ -22,8 +22,4 @@ def recognize(file):
 
     # Detects speech in the audio file
     response = client.recognize(config, audio)
-
-    for result in response.results:
-        print('Token: {}'.format(result.alternatives))
-
     return ''.join(result.alternatives[0].transcript for result in response.results)
