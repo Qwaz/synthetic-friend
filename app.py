@@ -51,7 +51,7 @@ def response_generation():
     })
     response_candidates = json.loads(response.text)
     return jsonify({
-        'text': random.choice(response_candidates)['message'],
+        'text': random.choice(response_candidates[:3])['message'],
         'video': '/static/{}'.format(random.choice([
             "IU2_talk1.mp4",
             "IU2_talk2.mp4",
