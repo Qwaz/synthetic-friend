@@ -1,0 +1,3 @@
+[submodule "tacotron-ksss"]
+	path = tacotron_ksss
+	url = https://github.com/Qwaz/tacotron-ksss.git
