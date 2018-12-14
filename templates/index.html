@@ -14,8 +14,8 @@
 <body>
 <div class="viewport flex-container">
     <div id="leftPanel">
-        <video autoplay muted loop id="backgroundVideo">
-            <source src="static/obama.mp4" type="video/mp4">
+        <video autoplay muted id="backgroundVideo">
+            <source src="static/IU2_intro.mp4" type="video/mp4">
         </video>
         <audio id="backgroundAudio">
             <source type="audio/wav">
@@ -31,6 +31,62 @@
 </body>
 <script>
     const SPINNER = '<i class="fas fa-spinner fa-pulse"></i>';
+    const VIDEO_ID = "backgroundVideo";
+
+    function randomChoice(arr) {
+        return arr[Math.floor(arr.length * Math.random())];
+    }
+
+    document.getElementById(VIDEO_ID).addEventListener("ended", () => {
+        changeSrc(VIDEO_ID, randomChoice([
+            "static/IU2_nothing1.mp4",
+            "static/IU2_nothing2.mp4",
+            "static/IU2_nothing3.mp4",
+        ]));
+    }, false);
+
+    function changeSrc(id, src) {
+        let elem = document.getElementById(id);
+        elem.pause();
+        elem.children[0].setAttribute('src', src);
+        elem.load();
+        elem.play();
+    }
+
+    function printError() {
+        changeLastBubbleHTML("서버 연결 도중 에러가 발생했습니다");
+    }
+
+    function handleSpeechGeneration(data) {
+        changeSrc(VIDEO_ID, randomChoice([
+            "static/IU2_talk1.mp4",
+            "static/IU2_talk2.mp4",
+        ]));
+        deleteLastBubble();
+        changeSrc("backgroundAudio", data.audio);
+    }
+
+    function handleBotResponse(data) {
+        changeLastBubbleHTML(data.text);
+        // changeSrc(VIDEO_ID, data.video);
+
+        let textOnly = data.text.substring(0, data.text.lastIndexOf('(') - 1);
+        if (textOnly.charAt(textOnly.length - 1) !== '?') {
+            textOnly = textOnly + '.';
+        }
+        addBubble('bot-chat', '음성을 합성하는 중입니다');
+        generateSpeech(textOnly, handleSpeechGeneration);
+    }
+
+    function handleSpeechToText(res) {
+        if (typeof res === "string") {
+            changeLastBubbleHTML(res);
+            addBubble('bot-chat', SPINNER);
+            generateResponse(res, handleBotResponse, printError);
+        } else {
+            deleteLastBubble();
+        }
+    }
 
     let recording = false;
     let recordButton = document.getElementById("recordButton");
@@ -57,47 +113,6 @@
 
     let mediaRecorder = null;
 
-    function printError() {
-        changeLastBubbleHTML("서버 연결 도중 에러가 발생했습니다");
-    }
-
-    function handleSpeechGeneration(data) {
-        deleteLastBubble();
-
-        let audio = document.getElementById("backgroundAudio");
-        audio.pause();
-        audio.children[0].setAttribute('src', data.audio);
-        audio.load();
-        audio.play();
-    }
-
-    function handleBotResponse(data) {
-        changeLastBubbleHTML(data.text);
-
-        let video = document.getElementById("backgroundVideo");
-        video.pause();
-        video.children[0].setAttribute('src', data.video);
-        video.load();
-        video.play();
-
-        let textOnly = data.text.substring(0, data.text.lastIndexOf('(') - 1);
-        if (textOnly.charAt(textOnly.length - 1) !== '?') {
-            textOnly = textOnly + '.';
-        }
-        addBubble('bot-chat', '음성을 합성하는 중입니다');
-        generateSpeech(textOnly, handleSpeechGeneration);
-    }
-
-    function handleSpeechToText(res) {
-        if (typeof res === "string") {
-            changeLastBubbleHTML(res);
-            addBubble('bot-chat', SPINNER);
-            generateResponse(res, handleBotResponse, printError);
-        } else {
-            deleteLastBubble();
-        }
-    }
-
     function triggerRecord() {
         recording = !recording;
         updateRecord();
@@ -110,6 +125,7 @@
 
                         mediaRecorder.addEventListener('dataavailable', function (e) {
                                 if (e.data.size > 0) {
+                                    changeSrc(VIDEO_ID, "static/IU2_wait.mp4");
                                     speechToText(e.data, handleSpeechToText, printError);
                                 }
                             }

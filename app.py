@@ -12,6 +12,9 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['GENERATED_FOLDER'] = 'generated'
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credential.json"
 
+if not os.path.exists(app.config['GENERATED_FOLDER']):
+    os.makedirs(app.config['GENERATED_FOLDER'])
+
 synthesizer = Synthesizer()
 synthesizer.load('tacotron_ksss/ksss-pretrained', 1, None)
 
@@ -49,7 +52,10 @@ def response_generation():
     response_candidates = json.loads(response.text)
     return jsonify({
         'text': random.choice(response_candidates)['message'],
-        'video': '/generated/obama{}.mp4'.format(random.randint(1, 3)),
+        'video': '/static/{}'.format(random.choice([
+            "IU2_talk1.mp4",
+            "IU2_talk2.mp4",
+        ])),
     })
 
 
