@@ -2,6 +2,9 @@
 uploads
 credential.json
 
+generated/*.wav
+generated/*.png
+
 ### Flask ###
 instance/*
 !instance/.gitignore

@@ -17,6 +17,9 @@
         <video autoplay muted loop id="backgroundVideo">
             <source src="static/obama.mp4" type="video/mp4">
         </video>
+        <audio id="backgroundAudio">
+            <source type="audio/wav">
+        </audio>
         <div id="bottomDiv">
             <button id="recordButton" disabled onclick="triggerRecord()"></button>
         </div>
@@ -54,6 +57,47 @@
 
     let mediaRecorder = null;
 
+    function printError() {
+        changeLastBubbleHTML("서버 연결 도중 에러가 발생했습니다");
+    }
+
+    function handleSpeechGeneration(data) {
+        deleteLastBubble();
+
+        let audio = document.getElementById("backgroundAudio");
+        audio.pause();
+        audio.children[0].setAttribute('src', data.audio);
+        audio.load();
+        audio.play();
+    }
+
+    function handleBotResponse(data) {
+        changeLastBubbleHTML(data.text);
+
+        let video = document.getElementById("backgroundVideo");
+        video.pause();
+        video.children[0].setAttribute('src', data.video);
+        video.load();
+        video.play();
+
+        let textOnly = data.text.substring(0, data.text.lastIndexOf('(') - 1);
+        if (textOnly.charAt(textOnly.length - 1) !== '?') {
+            textOnly = textOnly + '.';
+        }
+        addBubble('bot-chat', '음성을 합성하는 중입니다');
+        generateSpeech(textOnly, handleSpeechGeneration);
+    }
+
+    function handleSpeechToText(res) {
+        if (typeof res === "string") {
+            changeLastBubbleHTML(res);
+            addBubble('bot-chat', SPINNER);
+            generateResponse(res, handleBotResponse, printError);
+        } else {
+            deleteLastBubble();
+        }
+    }
+
     function triggerRecord() {
         recording = !recording;
         updateRecord();
@@ -65,26 +109,11 @@
                         mediaRecorder = new MediaRecorder(stream, options);
 
                         mediaRecorder.addEventListener('dataavailable', function (e) {
-                            if (e.data.size > 0) {
-                                speechToText(e.data, (res) => {
-                                    if (typeof res === "string") {
-                                        changeLastBubbleHTML(res);
-                                        addBubble('bot-chat', SPINNER);
-                                        generateResponse(res, (data) => {
-                                            changeLastBubbleHTML(data.text);
-
-                                            let video = document.getElementById("backgroundVideo");
-                                            video.pause();
-                                            video.children[0].setAttribute('src', data.video);
-                                            video.load();
-                                            video.play();
-                                        });
-                                    } else {
-                                        deleteLastBubble();
-                                    }
-                                });
+                                if (e.data.size > 0) {
+                                    speechToText(e.data, handleSpeechToText, printError);
+                                }
                             }
-                        });
+                        );
 
                         mediaRecorder.start();
                     }

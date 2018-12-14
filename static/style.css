@@ -42,6 +42,10 @@ html, body, .viewport {
     object-fit: cover;
 }
 
+#backgroundAudio {
+    display: none;
+}
+
 #bottomDiv {
     position: relative;
     margin-top: -220px;

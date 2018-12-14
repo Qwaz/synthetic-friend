@@ -1,14 +1,19 @@
+from datetime import datetime
 import json
 import os
 
-from tacotron_ksss
+from tacotron_ksss.tacotron.synthesizer import Synthesizer
 
 import requests
 from flask import Flask, render_template, send_from_directory, request, abort, jsonify
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = '.\\uploads'
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ".\\credential.json"
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['GENERATED_FOLDER'] = 'generated'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credential.json"
+
+synthesizer = Synthesizer()
+synthesizer.load('tacotron_ksss/ksss-pretrained', 1, None)
 
 
 @app.route('/')
@@ -19,7 +24,6 @@ def index():
 @app.route('/api/speech_recognition', methods=['POST'])
 def speech_recognition():
     from speech import recognize
-    from datetime import datetime
     if 'file' not in request.files:
         abort(400)
     file = request.files['file']
@@ -46,6 +50,26 @@ def response_generation():
     return jsonify({
         'text': random.choice(response_candidates)['message'],
         'video': '/generated/obama{}.mp4'.format(random.randint(1, 3)),
+    })
+
+
+@app.route('/api/speech_generation', methods=['POST'])
+def speech_generation():
+    if 'text' not in request.form:
+        abort(400)
+
+    audio_name = '{}.wav'.format(datetime.now().strftime("%Y-%m-%d_%H%M%S_%f"))
+    audio_path = os.path.join(app.config['GENERATED_FOLDER'], audio_name)
+
+    synthesizer.synthesize(
+            texts=[request.form['text']],
+            paths=[audio_path],
+            speaker_ids=[0],
+            attention_trim=False,
+            isKorean=True)[0]
+
+    return jsonify({
+        'audio': '/generated/{}'.format(audio_name[:-4] + '.0.wav'),
     })
 
 

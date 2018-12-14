@@ -1,6 +1,7 @@
-function speechToText(data, callback) {
+function speechToText(data, callback, failure) {
     let formData = new FormData();
     formData.append('file', new File([data], "speech"));
+    console.log("Trying to recognize speech...");
 
     reqwest({
         url: '/api/speech_recognition',
@@ -9,10 +10,15 @@ function speechToText(data, callback) {
         processData: false
     }).then(response => {
         callback(response);
+    }, error => {
+        if (failure) {
+            failure(error);
+        }
     });
 }
 
-function generateResponse(data, callback) {
+function generateResponse(data, callback, failure) {
+    console.log("Generating response for: " + data);
     reqwest({
         url: '/api/response_generation',
         method: 'post',
@@ -20,7 +26,30 @@ function generateResponse(data, callback) {
             text: data
         }
     }).then(response => {
+        console.log("Response for '" + data + "' is: " + response);
         callback(response);
+    }, error => {
+        if (failure) {
+            failure(error);
+        }
+    });
+}
+
+function generateSpeech(data, callback, failure) {
+    console.log("Generating speech for: " + data);
+    reqwest({
+        url: '/api/speech_generation',
+        method: 'post',
+        data: {
+            text: data
+        }
+    }).then(response => {
+        console.log("Generated speech is at: " + response.audio);
+        callback(response);
+    }, error => {
+        if (failure) {
+            failure(error);
+        }
     });
 }
 
