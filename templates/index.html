@@ -125,7 +125,7 @@
 
                         mediaRecorder.addEventListener('dataavailable', function (e) {
                                 if (e.data.size > 0) {
-                                    changeSrc(VIDEO_ID, "static/IU2_wait.mp4");
+                                    changeSrc(VIDEO_ID, "static/IU_waiting.mp4");
                                     speechToText(e.data, handleSpeechToText, printError);
                                 }
                             }
